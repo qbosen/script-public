@@ -1,6 +1,9 @@
+import sys
+
 import requests
 
-import structs
+from util import dotdict
+from util import clipboard
 import textwrap
 
 
@@ -53,7 +56,7 @@ query questionOfToday {
 
 
 def format_note(data: dict, cn_tag=False) -> str:
-    data = structs.DotDict(data).data
+    data = dotdict.DotDict(data).data
 
     # 直接从 chrome 获取 property path， 使用 Map 做了一层 dot 的封装
 
@@ -75,6 +78,11 @@ def format_note(data: dict, cn_tag=False) -> str:
         """)
 
 
+def copy_today_question_note():
+    question = question_of_today()
+    note = format_note(question, cn_tag=False)
+    clipboard.copy(note)
+
+
 if __name__ == '__main__':
-    today = question_of_today()
-    print(format_note(today, cn_tag=True))
+    copy_today_question_note()
